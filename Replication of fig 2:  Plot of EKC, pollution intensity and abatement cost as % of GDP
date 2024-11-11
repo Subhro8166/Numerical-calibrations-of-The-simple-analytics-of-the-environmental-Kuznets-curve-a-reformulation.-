@@ -1,0 +1,36 @@
+from sympy import Symbol, latex
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+def p(w, phi, t, psi, a,b):
+    return ((phi / (1 - t)) * (psi / t) ** (t / (1 - t)) * w ** (1 / (1 - t)) - \
+           (phi / (1 - t)) ** (a + b) * (psi / t) ** (t * (a + b) / (1 - t)) * (b / a) ** b * w ** ((a + b * t) / (1 - t)))/10000
+
+def i(w, phi, t, psi, a,b):
+    return 1 - (phi / (1 - t)) ** (a + b - 1) * (psi / t) ** (t * (a + b - 1) / (1 - t)) * (b / a) ** b * w ** ((a + b * t - 1) / (1 - t))
+
+def c(a,b):
+    return b / (a+ b)
+
+w = np.arange(20, 480, 10)
+
+p1 = p(w, 3, 0.4, 0.1, 0.999, 0.016)
+i1 = i(w, 3, 0.4, 0.1, 0.999, 0.016)
+c1 = c( 0.999,0.016)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.plot(w, p1, "r-", linewidth=2, label='EKC')
+ax.plot(w, i1, color='g', linestyle=':', label='Pollution intensity')
+ax.axhline(y=c1, color='b', linestyle='-.', label='Abatement cost (in % of GDP)')
+ax.legend()
+ax.set_xlabel('Per-capita income (w)')
+ax.set_ylabel('Net pollution (P)')
+
+ax.set_ylim(0, 0.02,10)
+
+plt.savefig('figure.png', dpi=300)
+
+plt.show()
+
