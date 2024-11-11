@@ -1,0 +1,16 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def p(w,phi,t,psi,a,b):
+    return (phi/(1-t))*(psi/t)**(t/(1-t))*w**(1/(1-t)) - (phi/(1-t))**(a+b) *(psi/t)**(t*(a+b)/(1-t))*(b/a)**(b)*w**((a+b*t)/(1-t))
+
+w = np.arange(1,400,10)
+
+p4=p(w,3,0.85,0.1,0.6,0.5)
+
+fig,ax=plt.subplots()
+ax.plot(w,p4,"b-",label='IRS and EKC')
+
+ax.legend()
+ax.set_xlabel('w(t)')
+ax.set_ylabel('P')
